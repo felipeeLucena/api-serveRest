@@ -79,6 +79,8 @@ src/test/java
 
 * Listar usuários autenticado
 * Acesso negado sem token
+* Criar usuário com sucesso (POST)
+* Validação de erro ao criar usuário com payload inválido
 
 ---
 
@@ -118,7 +120,7 @@ Arquivo:
 
 ## 📌 Próximos Passos
 
-* Testes de POST / PUT / DELETE
+* Testes de PUT / DELETE
 * Validação de schemas
 * Relatórios (Allure)
 * Paralelismo
