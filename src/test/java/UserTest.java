@@ -46,6 +46,42 @@ public class UserTest extends AuthenticatedBaseTest {
                 assertThat(response.jsonPath().getString("_id"), notNullValue());
             }
         }
+
+        @Nested
+        class UpdateUser {
+
+            @Test
+            void shouldUpdateUserSuccessfully() {
+
+                var createResponse = userService.createUser(UserDataFactory.validUser());
+                String userId = createResponse.jsonPath().getString("_id");
+
+                UserRequest updatedRequest = UserDataFactory.updatedUser();
+
+                var updateResponse = userService.updateUser(userId, updatedRequest);
+
+                assertThat(updateResponse.statusCode(), is(OK));
+                assertThat(updateResponse.jsonPath().getString("message"),
+                        containsString("Registro alterado com sucesso"));
+            }
+        }
+
+        @Nested
+        class DeleteUser {
+
+            @Test
+            void shouldDeleteUserSuccessfully() {
+
+                var createResponse = userService.createUser(UserDataFactory.validUser());
+                String userId = createResponse.jsonPath().getString("_id");
+
+                var deleteResponse = userService.deleteUser(userId);
+
+                assertThat(deleteResponse.statusCode(), is(OK));
+                assertThat(deleteResponse.jsonPath().getString("message"),
+                        containsString("Registro excluído com sucesso"));
+            }
+        }
     }
 
     // =========================
@@ -75,6 +111,35 @@ public class UserTest extends AuthenticatedBaseTest {
                 var response = userService.createUser(request);
 
                 assertThat(response.statusCode(), is(BAD_REQUEST));
+            }
+        }
+
+        @Nested
+        class UpdateUser {
+
+            @Test
+            void shouldReturnBadRequestWhenUpdatingWithInvalidPayload() {
+
+                var createResponse = userService.createUser(UserDataFactory.validUser());
+                String userId = createResponse.jsonPath().getString("_id");
+
+                UserRequest invalidRequest = UserDataFactory.userWithoutEmail();
+
+                var response = userService.updateUser(userId, invalidRequest);
+
+                assertThat(response.statusCode(), is(BAD_REQUEST));
+            }
+        }
+
+        @Nested
+        class DeleteUser {
+
+            @Test
+            void shouldReturnOkWhenDeletingNonExistingUser() {
+
+                var response = userService.deleteUser("invalid-id");
+
+                assertThat(response.statusCode(), is(OK));
             }
         }
     }

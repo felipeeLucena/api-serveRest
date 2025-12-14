@@ -32,4 +32,14 @@ public class UserDataFactory {
                 "true"
         );
     }
+
+    public static UserRequest updatedUser() {
+        return new UserRequest(
+                "QA User Updated",
+                "updated_" + UUID.randomUUID() + "@mail.com",
+                "123456",
+                "true"
+        );
+    }
+
 }

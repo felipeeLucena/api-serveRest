@@ -28,4 +28,23 @@ public class UserService extends BaseService {
                 .extract()
                 .response();
     }
+    public Response updateUser(String userId, UserRequest request) {
+        return authenticatedRequest()
+                .body(request)
+                .when()
+                .put(ENDPOINT + "/" + userId)
+                .then()
+                .extract()
+                .response();
+    }
+
+    public Response deleteUser(String userId) {
+        return authenticatedRequest()
+                .when()
+                .delete(ENDPOINT + "/" + userId)
+                .then()
+                .extract()
+                .response();
+    }
+
 }

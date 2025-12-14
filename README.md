@@ -1,7 +1,7 @@
 # API ServeRest – Automated API Tests
 
 Projeto de **automação de testes de API** utilizando **Java, RestAssured e JUnit 5**, aplicado sobre a API pública **ServeRest**.
-Este repositório faz parte do meu **portfólio de QA** e demonstra organização, boas práticas e uso de CI.
+Este repositório faz parte do meu **portfólio de QA** e demonstra organização, boas práticas e uso de CI/CD.
 
 ---
 
@@ -51,36 +51,52 @@ src/test/java
 
 ## 🧪 Estratégia de Testes
 
-* Camada **Service** responsável pelas requisições
+* Camada **Service** responsável pelas requisições HTTP
 * Testes não utilizam `given()` diretamente
 * Autenticação centralizada
 * Token Bearer reutilizado via `AuthContext`
 * Separação clara entre cenários de **sucesso** e **falha**
+* Organização por endpoint e verbo HTTP
 
 ---
 
 ## 🔐 Autenticação
 
 * Login executado automaticamente antes dos testes autenticados
-* Token salvo em memória
+* Token Bearer salvo em memória
 * Utilizado em endpoints protegidos
 
 ---
 
 ## ✅ Cenários Implementados
 
-### Login
+### 🔑 Login
 
 * Login com sucesso
 * Login com credenciais inválidas
-* Campos obrigatórios ausentes
+* Validação de campos obrigatórios
 
-### Usuários
+### 👤 Usuários
+
+#### GET /usuarios
 
 * Listar usuários autenticado
 * Acesso negado sem token
-* Criar usuário com sucesso (POST)
-* Validação de erro ao criar usuário com payload inválido
+
+#### POST /usuarios
+
+* Criar usuário com sucesso
+* Erro ao criar usuário com payload inválido
+
+#### PUT /usuarios/{id}
+
+* Atualizar usuário com sucesso
+* Erro ao atualizar usuário com payload inválido
+
+#### DELETE /usuarios/{id}
+
+* Deletar usuário com sucesso
+* Comportamento validado ao deletar usuário inexistente (conforme contrato da API)
 
 ---
 
@@ -94,11 +110,11 @@ mvn clean test
 
 ## 🤖 CI – GitHub Actions
 
-* Executa automaticamente em:
+Pipeline configurado para:
 
-  * Push na branch `main`
-  * Pull Requests
-* Execução manual habilitada (`workflow_dispatch`)
+* Push na branch `main`
+* Pull Requests
+* Execução manual via botão **Run workflow**
 
 Arquivo:
 
@@ -112,15 +128,13 @@ Arquivo:
 
 * Código organizado por responsabilidade
 * Reuso de código
-* Manutenção facilitada
-* Estrutura escalável para novas APIs
-* Padrão aplicado em ambientes reais de QA
+* Estrutura escalável
+* Padrões utilizados em projetos reais de QA
 
 ---
 
 ## 📌 Próximos Passos
 
-* Testes de PUT / DELETE
 * Validação de schemas
 * Relatórios (Allure)
 * Paralelismo
